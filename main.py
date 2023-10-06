@@ -34,7 +34,7 @@ while i < 3:
 print(url_list)
 
 # Create a dataframe
-listing_frame = pd.DataFrame(columns=["listing"])
+listing_frame = pd.DataFrame(columns=["make", "model", "mileage", "fuel-type", "first-registration", "price"])
 
 # Iterate over the different webpages created previously
 for webpage in url_list:
@@ -47,18 +47,25 @@ for webpage in url_list:
     # Iterate over the listings in order to find each listing's details
     for listing in listings:
         # Extract the desired attributes
-        data_price = listing.get_attribute("data-price")
         data_make = listing.get_attribute("data-make")
+        data_model = listing.get_attribute("data-model")
         data_mileage = listing.get_attribute("data-mileage")
         data_fuel_type = listing.get_attribute("data-fuel-type")
-        data_model = listing.get_attribute("data-model")
         data_first_registration = listing.get_attribute("data-first-registration")
+        data_price = listing.get_attribute("data-price")
 
         # Create a dictionary where we'll momentarily store the data
-        listing_data = {"listing": listing_data}
+        listing_data = {"make": data_make,
+                        "model": data_model,
+                        "mileage": data_mileage,
+                        "fuel-type": data_fuel_type,
+                        "first-registration": data_first_registration,
+                        "price": data_price}
+
+        print(listing_data)
 
         # Add dictionary to a dataframe
-        frame = pd.DataFrame(listing_data, columns=["listing"], index=[0])
+        frame = pd.DataFrame(listing_data, index=[0])
 
         # Append dataframe to main dataframe
         listing_frame = listing_frame._append(frame, ignore_index=True)
