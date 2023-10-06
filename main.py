@@ -16,16 +16,19 @@ option.add_argument("--ignore-certificate-errors")
 # Create an instance of the browser
 browser = webdriver.Chrome(options=option)
 
-url = "https://www.autoscout24.it/lst/mercedes-benz/a-250?atype=C&cy=I&desc=0&sort=standard&source=homepage_search" \
-      "-mask&ustate=N%2CU"
+# Specify make and model
+make = "mercedes-benz"
+model = "a-250"
+url = "https://www.autoscout24.it/lst/" + make + "/" + model + "?atype=C&cy=I&desc=0&sort=standard&source" \
+                                                               "=homepage_search-mask&ustate=N%2CU"
 
 # Create list of URLs we need to open
 i = 2
 url_list = [url]
 
 # Iterate in order to create URls
-while i < 3:
-    url_to_add = "https://www.autoscout24.it/lst/mercedes-benz/a-250?atype=C&cy=I&desc=0&page=" + str(
+while i < 21:
+    url_to_add = "https://www.autoscout24.it/lst/" + make + "/" + model + "?atype=C&cy=I&desc=0&page=" + str(
         i) + "&search_id=meyjiwlhtq&sort=standard&source=listpage_pagination&ustate=N%2CU"
     url_list.append(url_to_add)
     i += 1
