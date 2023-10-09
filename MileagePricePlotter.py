@@ -8,7 +8,7 @@ class MileagePricePlotter:
         self.average_price_values = average_price_values
         self.std_deviation_values = std_deviation_values
 
-    def plot_mileage_price(self, predicted_prices_sorted):
+    def plot_mileage_price(self, predicted_prices_sorted, degree):
         sorted_indices = np.argsort(self.mileage_values)
         mileage_values_sorted = self.mileage_values.iloc[sorted_indices]
 

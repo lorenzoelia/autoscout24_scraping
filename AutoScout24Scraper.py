@@ -56,6 +56,7 @@ class AutoScout24Scraper:
 
     def save_to_csv(self, filename="listings.csv"):
         self.listing_frame.to_csv(filename, index=False)
+        print("Data saved to", filename)
 
     def quit_browser(self):
         self.browser.quit()
