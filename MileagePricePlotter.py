@@ -17,7 +17,7 @@ class MileagePricePlotter:
         plt.fill_between(self.mileage_values, self.average_price_values - self.std_deviation_values,
                          self.average_price_values + self.std_deviation_values, alpha=0.2, label='Standard Deviation')
         plt.plot(mileage_values_sorted, predicted_prices_sorted, color='red', label=f'Polynomial Regression (Degree {degree})')
-        plt.title('Mileage vs. Price with Polynomial Regression')
+        plt.title('Price vs. Mileage with Polynomial Regression')
         plt.xlabel('Mileage (rounded to thousands)')
         plt.ylabel('Price')
         plt.legend()
