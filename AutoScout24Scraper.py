@@ -28,7 +28,7 @@ class AutoScout24Scraper:
 
         for webpage in url_list:
             self.browser.get(webpage)
-            listings = self.browser.find_elements_by_xpath("//article[contains(@class, 'cldt-summary-full-item')]")
+            listings = self.browser.find_elements("xpath", "//article[contains(@class, 'cldt-summary-full-item')]")
 
             for listing in listings:
                 data_make = listing.get_attribute("data-make")
