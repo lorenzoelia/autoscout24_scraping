@@ -5,20 +5,21 @@ from MileagePriceRegression import MileagePriceRegression
 
 
 if __name__ == "__main__":
-    make = "mercedes-benz"
-    model = "a-250"
+    make = "hyundai"
+    model = "i20"
+    version = "n"
     num_pages = 20
 
     input_file = f'listings_{make}_{model}.csv'
 
-    # scraper = AutoScout24Scraper(make, model)
-    # scraper.scrape(num_pages, True)
-    # scraper.save_to_csv(input_file)
-    # scraper.quit_browser()
+    scraper = AutoScout24Scraper(make, model, version)
+    scraper.scrape(num_pages, True)
+    scraper.save_to_csv(input_file)
+    scraper.quit_browser()
 
     # Data Processing
-    output_file_no_duplicates = 'listings_no_duplicates.csv'
-    output_file_preprocessed = 'listings_preprocessed.csv'
+    output_file_no_duplicates = f'listings_{make}_{model}_no_duplicates.csv'
+    output_file_preprocessed = f'listings_{make}_{model}_preprocessed.csv'
 
     processor = DataProcessor(input_file)
     data = processor.read_data()
