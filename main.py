@@ -5,14 +5,16 @@ from MileagePriceRegression import MileagePriceRegression
 
 
 if __name__ == "__main__":
-    make = "hyundai"
-    model = "i20"
-    version = "n"
+    make = "audi"
+    model = "tt"
+    version = ""
+    year_from = 2014
+    year_to = 2023
     num_pages = 20
 
     input_file = f'listings_{make}_{model}.csv'
 
-    scraper = AutoScout24Scraper(make, model, version)
+    scraper = AutoScout24Scraper(make, model, version, year_from, year_to)
     scraper.scrape(num_pages, True)
     scraper.save_to_csv(input_file)
     scraper.quit_browser()

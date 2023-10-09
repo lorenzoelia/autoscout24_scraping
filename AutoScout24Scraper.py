@@ -4,12 +4,14 @@ from selenium import webdriver
 
 
 class AutoScout24Scraper:
-    def __init__(self, make, model, version):
+    def __init__(self, make, model, version, year_from, year_to):
         self.make = make
         self.model = model
         self.version = version
-        self.base_url = ("https://www.autoscout24.it/lst/{}/{}/ve_{}?"
-                         "atype=C&cy=I&desc=0&sort=standard&source=homepage_search-mask&ustate=N%2CU")
+        self.year_from = year_from
+        self.year_to = year_to
+        self.base_url = ("https://www.autoscout24.it/lst/{}/{}/ve_{}?atype=C&cy=I&damaged_listing=exclude&desc=0&"
+                         "fregfrom={}&fregto={}&sort=standard&source=homepage_search-mask&ustate=N%2CU")
         self.listing_frame = pd.DataFrame(
             columns=["make", "model", "mileage", "fuel-type", "first-registration", "price"])
         self.options = webdriver.ChromeOptions()
@@ -18,9 +20,9 @@ class AutoScout24Scraper:
         self.browser = webdriver.Chrome(options=self.options)
 
     def generate_urls(self, num_pages):
-        url_list = [self.base_url.format(self.make, self.model, self.version)]
+        url_list = [self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to)]
         for i in range(2, num_pages + 1):
-            url_to_add = (self.base_url.format(self.make, self.model, self.version) +
+            url_to_add = (self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to) +
                           f"&page={i}&search_id=meyjiwlhtq&sort=standard&source=listpage_pagination&ustate=N%2CU")
             url_list.append(url_to_add)
         return url_list
