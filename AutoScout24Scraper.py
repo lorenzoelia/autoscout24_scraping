@@ -4,14 +4,18 @@ from selenium import webdriver
 
 
 class AutoScout24Scraper:
-    def __init__(self, make, model, version, year_from, year_to):
+    def __init__(self, make, model, version, year_from, year_to, power_from, power_to, powertype):
         self.make = make
         self.model = model
         self.version = version
         self.year_from = year_from
         self.year_to = year_to
+        self.power_from = power_from
+        self.power_to = power_to
+        self.powertype = powertype
         self.base_url = ("https://www.autoscout24.it/lst/{}/{}/ve_{}?atype=C&cy=I&damaged_listing=exclude&desc=0&"
-                         "fregfrom={}&fregto={}&sort=standard&source=homepage_search-mask&ustate=N%2CU")
+                         "fregfrom={}&fregto={}&powerfrom={}&powerto={}&powertype={}&sort=standard&"
+                         "source=homepage_search-mask&ustate=N%2CU")
         self.listing_frame = pd.DataFrame(
             columns=["make", "model", "mileage", "fuel-type", "first-registration", "price"])
         self.options = webdriver.ChromeOptions()
@@ -20,9 +24,11 @@ class AutoScout24Scraper:
         self.browser = webdriver.Chrome(options=self.options)
 
     def generate_urls(self, num_pages):
-        url_list = [self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to)]
+        url_list = [self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to,
+                                         self.power_from, self.power_to, self.powertype)]
         for i in range(2, num_pages + 1):
-            url_to_add = (self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to) +
+            url_to_add = (self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to,
+                                               self.power_from, self.power_to, self.powertype) +
                           f"&page={i}&search_id=meyjiwlhtq&sort=standard&source=listpage_pagination&ustate=N%2CU")
             url_list.append(url_to_add)
         return url_list
