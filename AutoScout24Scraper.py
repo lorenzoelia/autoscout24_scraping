@@ -23,7 +23,7 @@ class AutoScout24Scraper:
             url_list.append(url_to_add)
         return url_list
 
-    def scrape(self, num_pages):
+    def scrape(self, num_pages, verbose=False):
         url_list = self.generate_urls(num_pages)
 
         for webpage in url_list:
@@ -47,8 +47,11 @@ class AutoScout24Scraper:
                     "price": data_price
                 }
 
+                if verbose:
+                    print(listing_data)
+
                 frame = pd.DataFrame(listing_data, index=[0])
-                self.listing_frame = self.listing_frame.append(frame, ignore_index=True)
+                self.listing_frame = self.listing_frame._append(frame, ignore_index=True)
                 time.sleep(1)
 
     def save_to_csv(self, filename="listings.csv"):
