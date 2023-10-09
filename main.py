@@ -24,11 +24,10 @@ if __name__ == "__main__":
     data = processor.read_data()
     data_no_duplicates = processor.remove_duplicates(data)
     data_preprocessed = processor.preprocess_data(data_no_duplicates)
+    data_rounded = processor.round(data_preprocessed, 1000)
     processor.save_processed_data(data_preprocessed, output_file_preprocessed)
 
     # Mileage-Price Regression
-    data_preprocessed['mileage'] = data_preprocessed['mileage'].astype(int)
-    data_preprocessed['mileage_grouped'] = (data_preprocessed['mileage'] // 1000) * 1000
     grouped_data = data_preprocessed.groupby('mileage_grouped')['price'].agg(['mean', 'std']).reset_index()
     mileage_values = grouped_data['mileage_grouped']
     average_price_values = grouped_data['mean']
