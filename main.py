@@ -32,11 +32,11 @@ if __name__ == "__main__":
     mileage_values = grouped_data['mileage_grouped']
     average_price_values = grouped_data['mean']
 
-    regression = MileagePriceRegression(mileage_values, average_price_values)
-    degree = 2
-    mileage_values, predicted_prices = regression.perform_regression(degree)
+    for degree in range(1, 5):
+        regression = MileagePriceRegression(mileage_values, average_price_values)
+        mileage_values, predicted_prices = regression.perform_regression(degree)
 
-    # Mileage-Price Plotting
-    std_deviation_values = grouped_data['std']
-    plotter = MileagePricePlotter(mileage_values, average_price_values, std_deviation_values)
-    plotter.plot_mileage_price(predicted_prices, degree)
+        # Mileage-Price Plotting
+        std_deviation_values = grouped_data['std']
+        plotter = MileagePricePlotter(mileage_values, average_price_values, std_deviation_values)
+        plotter.plot_mileage_price(predicted_prices, degree)
