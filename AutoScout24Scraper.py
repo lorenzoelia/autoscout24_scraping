@@ -4,7 +4,7 @@ from selenium import webdriver
 
 
 class AutoScout24Scraper:
-    def __init__(self, make, model, version, year_from, year_to, power_from, power_to, powertype, zip, zipr):
+    def __init__(self, make, model, version, year_from, year_to, power_from, power_to, powertype, zip_list, zipr):
         self.make = make
         self.model = model
         self.version = version
@@ -13,7 +13,7 @@ class AutoScout24Scraper:
         self.power_from = power_from
         self.power_to = power_to
         self.powertype = powertype
-        self.zip = zip
+        self.zip_list = zip_list
         self.zipr = zipr
         self.base_url = ("https://www.autoscout24.it/lst/{}/{}/ve_{}?atype=C&cy=I&damaged_listing=exclude&desc=0&"
                          "fregfrom={}&fregto={}&powerfrom={}&powerto={}&powertype={}&sort=standard&"
@@ -25,18 +25,22 @@ class AutoScout24Scraper:
         self.options.add_argument("--ignore-certificate-errors")
         self.browser = webdriver.Chrome(options=self.options)
 
-    def generate_urls(self, num_pages):
+    def generate_urls(self, num_pages, zip):
         url_list = [self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to,
-                                         self.power_from, self.power_to, self.powertype, self.zip, self.zipr)]
+                                         self.power_from, self.power_to, self.powertype, zip, self.zipr)]
         for i in range(2, num_pages + 1):
             url_to_add = (self.base_url.format(self.make, self.model, self.version, self.year_from, self.year_to,
-                                               self.power_from, self.power_to, self.powertype, self.zip, self.zipr) +
-                          f"&page={i}&search_id=meyjiwlhtq&sort=standard&source=listpage_pagination&ustate=N%2CU")
+                                               self.power_from, self.power_to, self.powertype, zip, self.zipr) +
+                          f"&page={i}&sort=standard&source=listpage_pagination&ustate=N%2CU")
             url_list.append(url_to_add)
         return url_list
 
     def scrape(self, num_pages, verbose=False):
-        url_list = self.generate_urls(num_pages)
+        url_list = []
+        for zip in self.zip_list:
+            url_list.extend(self.generate_urls(num_pages, zip))
+
+        # print(url_list)
 
         for webpage in url_list:
             self.browser.get(webpage)

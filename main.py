@@ -14,19 +14,19 @@ if __name__ == "__main__":
     power_to = ""
     powertype = "kw"
     num_pages = 20
-    zip = "trieste"
-    zipr = 20
+    zipr = 100
 
-    zip_list_file_path = 'listacomuni.txt'
+    zip_list_file_path = 'capoluoghi.csv'
 
     handler = TextFileHandler(zip_list_file_path)
-    handler.load_data()
+    handler.load_data_csv()
 
-    zip_list = handler.export_comune_column()
+    zip_list = handler.export_capoluogo_column()
+    zip_list = [item.lower() for item in zip_list]
 
     input_file = f'listings/listings_{make}_{model}.csv'
 
-    scraper = AutoScout24Scraper(make, model, version, year_from, year_to, power_from, power_to, powertype, zip, zipr)
+    scraper = AutoScout24Scraper(make, model, version, year_from, year_to, power_from, power_to, powertype, zip_list, zipr)
     scraper.scrape(num_pages, True)
     scraper.save_to_csv(input_file)
     scraper.quit_browser()
