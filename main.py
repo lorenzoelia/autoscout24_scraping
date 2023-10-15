@@ -2,22 +2,31 @@ from AutoScout24Scraper import AutoScout24Scraper
 from DataProcessor import DataProcessor
 from MileagePricePlotter import MileagePricePlotter
 from MileagePriceRegression import MileagePriceRegression
-
+from TextFileHandler import TextFileHandler
 
 if __name__ == "__main__":
-    make = "fiat"
-    model = "500"
+    make = "audi"
+    model = "a1"
     version = ""
-    year_from = ""
+    year_from = "2018"
     year_to = ""
-    power_from = 50
-    power_to = 55
+    power_from = ""
+    power_to = ""
     powertype = "kw"
     num_pages = 20
+    zip = "trieste"
+    zipr = 20
+
+    zip_list_file_path = 'listacomuni.txt'
+
+    handler = TextFileHandler(zip_list_file_path)
+    handler.load_data()
+
+    zip_list = handler.export_comune_column()
 
     input_file = f'listings/listings_{make}_{model}.csv'
 
-    scraper = AutoScout24Scraper(make, model, version, year_from, year_to, power_from, power_to, powertype)
+    scraper = AutoScout24Scraper(make, model, version, year_from, year_to, power_from, power_to, powertype, zip, zipr)
     scraper.scrape(num_pages, True)
     scraper.save_to_csv(input_file)
     scraper.quit_browser()
@@ -38,7 +47,7 @@ if __name__ == "__main__":
     mileage_values = grouped_data['mileage_grouped']
     average_price_values = grouped_data['mean']
 
-    for degree in range(1, 5):
+    for degree in zipr(1, 5):
         regression = MileagePriceRegression(mileage_values, average_price_values)
         mileage_values, predicted_prices = regression.perform_regression(degree)
 
