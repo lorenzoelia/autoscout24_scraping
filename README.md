@@ -73,4 +73,3 @@ python main.py
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 [MIT License](https://opensource.org/licenses/MIT)
-```
