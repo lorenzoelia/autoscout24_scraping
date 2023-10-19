@@ -12,12 +12,13 @@ class MileagePriceRegression:
         self.mileage_values = mileage_values
         self.average_price_values = average_price_values
 
-    def perform_regression(self):
+    def perform_regression(self, plot=True):
         degrees, rss_scores = self.evaluate_degrees(degrees=range(1, 5))
-        self.plot_rss(degrees, rss_scores)
+        if plot:
+            self.plot_rss(degrees, rss_scores)
         best_degree = self.select_best_degree(degrees, rss_scores)
-        X_poly, predicted_prices = self.regression(best_degree)
-        return X_poly, predicted_prices, best_degree
+        predicted_prices = self.regression(best_degree)
+        return predicted_prices, best_degree
 
     def evaluate_degrees(self, degrees=range(1, 2)):
         # Number of folds for cross-validation
@@ -51,7 +52,7 @@ class MileagePriceRegression:
         poly_reg = LinearRegression()
         poly_reg.fit(X_poly, self.average_price_values)
         predicted_prices = poly_reg.predict(X_poly)
-        return X_poly, predicted_prices
+        return predicted_prices
 
     def select_best_degree(self, degrees, rss_scores, verbose=False):
         # Select the degree with the lowest RSS
