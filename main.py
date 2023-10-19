@@ -1,6 +1,5 @@
 from AutoScout24Scraper import AutoScout24Scraper
 from DataProcessor import DataProcessor
-from MileagePricePlotter import MileagePricePlotter
 from MileagePriceRegression import MileagePriceRegression
 from TextFileHandler import TextFileHandler
 
@@ -30,12 +29,11 @@ def main(scrape=False):
     grouped_data = data_preprocessed.groupby('mileage_grouped')['price'].agg(['mean', 'std']).reset_index()
     mileage_values = grouped_data['mileage_grouped']
     average_price_values = grouped_data['mean']
-    regression = MileagePriceRegression(mileage_values, average_price_values)
+    std_deviation_values = grouped_data['std']
+    regression = MileagePriceRegression(mileage_values, average_price_values, std_deviation_values)
     predicted_prices, best_degree = regression.perform_regression()
     # Mileage-Price Plotting
-    std_deviation_values = grouped_data['std']
-    plotter = MileagePricePlotter(mileage_values, average_price_values, std_deviation_values)
-    plotter.plot_mileage_price(predicted_prices, best_degree)
+    regression.plot_mileage_price(predicted_prices, best_degree)
 
 
 if __name__ == "__main__":
