@@ -47,24 +47,24 @@ def where_to_search():
     handler = TextFileHandler(zip_list_file_path)
     handler.load_data_csv()
     zip_list = handler.export_capoluogo_column()
-    zip_list = [item.lower() for item in zip_list]
+    zip_list = [item.lower() for item in zip_list].sort()
     return zip_list
 
 
 if __name__ == "__main__":
     make = "audi"
-    model = "a1"
-    version = ""
+    model = "q3"
+    version = "sportback"
     year_from = ""
     year_to = ""
     power_from = ""
     power_to = ""
     powertype = "kw"
-    num_pages = 10
+    num_pages = 20
     zipr = 100
 
     zip_list_file_path = 'capoluoghi.csv'
     downloaded_listings_file = f'listings/listings_{make}_{model}.csv'
     output_file_preprocessed = f'listings/listings_{make}_{model}_preprocessed.csv'
 
-    main(scrape=False)
+    main(scrape=True)
