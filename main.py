@@ -3,6 +3,8 @@ from DataProcessor import DataProcessor
 from MileagePriceRegression import MileagePriceRegression
 from TextFileHandler import TextFileHandler
 
+import os
+
 
 def main(scrape=False):
     zip_list = where_to_search()
@@ -66,5 +68,8 @@ if __name__ == "__main__":
     zip_list_file_path = 'capoluoghi.csv'
     downloaded_listings_file = f'listings/listings_{make}_{model}.csv'
     output_file_preprocessed = f'listings/listings_{make}_{model}_preprocessed.csv'
+    # Create the "listings" folder if it doesn't exist
+    if not os.path.exists("listings"):
+        os.makedirs("listings")
 
     main(scrape=True)
