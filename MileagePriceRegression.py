@@ -13,14 +13,15 @@ class MileagePriceRegression:
         self.average_price_values = average_price_values
 
     def perform_regression(self, plot=True):
-        degrees, rss_scores = self.evaluate_degrees(degrees=range(1, 5))
+        degrees, rss_scores = self._evaluate_degrees(degrees=range(1, 5))
         if plot:
-            self.plot_rss(degrees, rss_scores)
-        best_degree = self.select_best_degree(degrees, rss_scores)
-        predicted_prices = self.regression(best_degree)
+            self._plot_rss(degrees, rss_scores)
+        best_degree = self._select_best_degree(degrees, rss_scores)
+        poly_features, poly_reg = self._train_regression(self.mileage_values, self.average_price_values, best_degree)
+        predicted_prices = self._predict(self.mileage_values, poly_features, poly_reg)
         return predicted_prices, best_degree
 
-    def evaluate_degrees(self, degrees=range(1, 2)):
+    def _evaluate_degrees(self, degrees=range(1, 2)):
         # Number of folds for cross-validation
         k = 10
         # Initialize lists to store results
@@ -37,24 +38,24 @@ class MileagePriceRegression:
                 X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y[train_index], y[test_index]
 
-                poly_features = PolynomialFeatures(degree=degree)
-                poly_reg = LinearRegression()
-                poly_reg.fit(poly_features.fit_transform(X_train.values.reshape(-1, 1)), y_train)
-                y_pred = poly_reg.predict(poly_features.fit_transform(X_test.values.reshape(-1, 1)))
-                rss.append(self.calculate_rss(y_test, y_pred))
+                poly_features, poly_reg = self._train_regression(X_train, y_train, degree)
+                y_pred = self._predict(X_test, poly_features, poly_reg)
+                rss.append(self._calculate_rss(y_test, y_pred))
 
             rss_scores.append(np.mean(rss))
         return degrees, rss_scores
 
-    def regression(self, degree):
-        poly_features = PolynomialFeatures(degree=degree)
-        X_poly = poly_features.fit_transform(self.mileage_values.values.reshape(-1, 1))
-        poly_reg = LinearRegression()
-        poly_reg.fit(X_poly, self.average_price_values)
-        predicted_prices = poly_reg.predict(X_poly)
-        return predicted_prices
+    def _predict(self, X_test, poly_features, poly_reg):
+        y_pred = poly_reg.predict(poly_features.fit_transform(X_test.values.reshape(-1, 1)))
+        return y_pred
 
-    def select_best_degree(self, degrees, rss_scores, verbose=False):
+    def _train_regression(self, X, y, degree):
+        poly_features = PolynomialFeatures(degree=degree)
+        poly_reg = LinearRegression()
+        poly_reg.fit(poly_features.fit_transform(X.values.reshape(-1, 1)), y)
+        return poly_features, poly_reg
+
+    def _select_best_degree(self, degrees, rss_scores, verbose=False):
         # Select the degree with the lowest RSS
         best_degree = degrees[np.argmin(rss_scores)]
         if verbose:
@@ -62,10 +63,10 @@ class MileagePriceRegression:
 
         return best_degree
 
-    def calculate_rss(self, y_true, y_pred):
+    def _calculate_rss(self, y_true, y_pred):
         return np.sum((y_true - y_pred) ** 2)
 
-    def plot_rss(self, degrees, rss_scores):
+    def _plot_rss(self, degrees, rss_scores):
         # Plot RSS for each degree
         plt.figure(figsize=(10, 6))
         plt.plot(degrees, rss_scores, marker='o', linestyle='-')
