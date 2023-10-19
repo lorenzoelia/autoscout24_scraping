@@ -1,7 +1,7 @@
-from AutoScout24Scraper import AutoScout24Scraper
-from DataProcessor import DataProcessor
-from MileagePriceRegression import MileagePriceRegression
-from TextFileHandler import TextFileHandler
+from Miner.AutoScout24Scraper import AutoScout24Scraper
+from Analysis.DataProcessor import DataProcessor
+from Analysis.MileagePriceRegression import MileagePriceRegression
+from Miner.TextFileHandler import TextFileHandler
 
 import os
 
@@ -65,11 +65,11 @@ if __name__ == "__main__":
     num_pages = 20
     zipr = 100
 
-    zip_list_file_path = 'capoluoghi.csv'
+    zip_list_file_path = 'Miner/capoluoghi.csv'
     downloaded_listings_file = f'listings/listings_{make}_{model}.csv'
     output_file_preprocessed = f'listings/listings_{make}_{model}_preprocessed.csv'
     # Create the "listings" folder if it doesn't exist
     if not os.path.exists("listings"):
         os.makedirs("listings")
 
-    main(scrape=True)
+    main(scrape=False)
