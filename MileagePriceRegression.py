@@ -13,7 +13,7 @@ class MileagePriceRegression:
         self.average_price_values = average_price_values
         self.std_deviation_values = std_deviation_values
 
-    def perform_regression(self, plot=True):
+    def do_regression(self, plot=True):
         degrees, rss_scores = self._evaluate_degrees(degrees=range(1, 5))
         if plot:
             self._plot_rss(degrees, rss_scores)
