@@ -25,19 +25,21 @@ class MileagePriceRegression:
         # Initialize lists to store results
         rss_scores = []
         for degree in degrees:
-            x, y = self.regression(degree)
+            X = self.mileage_values
+            y = self.average_price_values
 
             # K-fold cross-validation
             kf = KFold(n_splits=k)
             rss = []
 
-            for train_index, test_index in kf.split(x):
-                x_train, x_test = x[train_index], x[test_index]
+            for train_index, test_index in kf.split(X):
+                X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y[train_index], y[test_index]
 
+                poly_features = PolynomialFeatures(degree=degree)
                 poly_reg = LinearRegression()
-                poly_reg.fit(x_train, y_train)
-                y_pred = poly_reg.predict(x_test)
+                poly_reg.fit(poly_features.fit_transform(X_train.values.reshape(-1, 1)), y_train)
+                y_pred = poly_reg.predict(poly_features.fit_transform(X_test.values.reshape(-1, 1)))
                 rss.append(self.calculate_rss(y_test, y_pred))
 
             rss_scores.append(np.mean(rss))
