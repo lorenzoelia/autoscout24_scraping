@@ -16,8 +16,8 @@ class MileagePriceRegression:
         degrees, rss_scores = self.evaluate_degrees(degrees=range(1, 5))
         self.plot_rss(degrees, rss_scores)
         best_degree = self.select_best_degree(degrees, rss_scores)
-        x_poly, predicted_prices = self.regression(best_degree)
-        return x_poly, predicted_prices, best_degree
+        X_poly, predicted_prices = self.regression(best_degree)
+        return X_poly, predicted_prices, best_degree
 
     def evaluate_degrees(self, degrees=range(1, 2)):
         # Number of folds for cross-validation

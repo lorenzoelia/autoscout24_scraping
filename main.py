@@ -31,7 +31,7 @@ def main(scrape=False):
     mileage_values = grouped_data['mileage_grouped']
     average_price_values = grouped_data['mean']
     regression = MileagePriceRegression(mileage_values, average_price_values)
-    mileage_values, predicted_prices, best_degree = regression.perform_regression()
+    _, predicted_prices, best_degree = regression.perform_regression()
     # Mileage-Price Plotting
     std_deviation_values = grouped_data['std']
     plotter = MileagePricePlotter(mileage_values, average_price_values, std_deviation_values)
@@ -39,9 +39,9 @@ def main(scrape=False):
 
 
 if __name__ == "__main__":
-    make = "ford"
-    model = "fiesta"
-    version = "st"
+    make = "audi"
+    model = "a1"
+    version = ""
     year_from = ""
     year_to = ""
     power_from = ""
@@ -52,4 +52,4 @@ if __name__ == "__main__":
 
     zip_list_file_path = 'capoluoghi.csv'
 
-    main()
+    main(scrape=False)
