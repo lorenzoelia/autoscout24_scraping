@@ -49,16 +49,16 @@ def where_to_search():
     handler = TextFileHandler(zip_list_file_path)
     handler.load_data_csv()
     zip_list = handler.export_capoluogo_column()
-    zip_list = [item.lower() for item in zip_list].sort()
+    zip_list = [item.lower() for item in zip_list]
     return zip_list
 
 
 if __name__ == "__main__":
     make = "audi"
-    model = "q3"
-    version = "sportback"
-    year_from = ""
-    year_to = ""
+    model = "rs6"
+    version = ""
+    year_from = "2013"
+    year_to = "2018"
     power_from = ""
     power_to = ""
     powertype = "kw"
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     if not os.path.exists("listings"):
         os.makedirs("listings")
 
-    main(scrape=False)
+    main(scrape=True)
